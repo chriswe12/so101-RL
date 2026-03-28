@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "so101-rl"
+version = "0.1.0"
+description = "MuJoCo pick-and-place workspace for the SO-101 follower arm."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Chris" },
+]
+dependencies = [
+  "gymnasium>=0.29,<1.2",
+  "mujoco>=3.2.0",
+  "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+training = [
+  "lerobot>=0.4.0",
+]
+robot = [
+  "robot_descriptions",
+]
+
+[tool.setuptools.packages.find]
+include = ["so101_rl*"]
