@@ -10,6 +10,9 @@ DEFAULT_LOCAL_MODEL_DIRS = (
     Path("external/SO-ARM100/Simulation/SO101"),
 )
 MODEL_FILENAMES = ("so101.xml", "so101_new_calib.xml", "so_arm100.xml")
+EXTRA_ASSET_SOURCES = (
+    (Path(__file__).resolve().parent.parent / "external" / "camera_top", "assets/camera_top"),
+)
 
 
 @dataclass(frozen=True)
@@ -77,6 +80,15 @@ def load_robot_xml_assets(source: RobotModelSource) -> tuple[str, dict[str, byte
             continue
         rel_path = file_path.relative_to(source.mjcf_path.parent).as_posix()
         asset_map[rel_path] = file_path.read_bytes()
+
+    for asset_dir, asset_prefix in EXTRA_ASSET_SOURCES:
+        if not asset_dir.is_dir():
+            continue
+        for file_path in sorted(asset_dir.rglob("*")):
+            if not file_path.is_file():
+                continue
+            rel_path = file_path.relative_to(asset_dir).as_posix()
+            asset_map[f"{asset_prefix}/{rel_path}"] = file_path.read_bytes()
 
     return xml_text, asset_map
 

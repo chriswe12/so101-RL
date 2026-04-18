@@ -5,8 +5,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .envs import SO101PickPlaceEnv
-from .record import EpisodeRecorder
+from .gl_backend import configure_backend
 
 
 def main() -> None:
@@ -31,7 +30,16 @@ def main() -> None:
         default=None,
         help="Optional path to so_arm100.xml if you do not want to use environment variables.",
     )
+    parser.add_argument(
+        "--headless",
+        action="store_true",
+        help="Use the EGL backend for headless execution.",
+    )
     args = parser.parse_args()
+
+    configure_backend(headless=args.headless)
+    from .envs import SO101PickPlaceEnv
+    from .record import EpisodeRecorder
 
     env = SO101PickPlaceEnv(render_mode="rgb_array", mjcf_path=args.mjcf_path)
     recorder = EpisodeRecorder() if args.record else None

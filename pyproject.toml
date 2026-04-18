@@ -21,6 +21,8 @@ dependencies = [
 [project.optional-dependencies]
 training = [
   "lerobot>=0.4.0",
+  "stable-baselines3>=2.3.0",
+  "tensorboard>=2.14",
 ]
 robot = [
   "robot_descriptions",
